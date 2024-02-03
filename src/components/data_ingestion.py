@@ -24,8 +24,11 @@ class DataIngestion:
 
         try:
             ##reading the data from mysql
-            df=read_sql_data()
-            logging.info("Reading completed mysql database")
+            ##df=read_sql_data()
+            ##logging.info("Reading completed mysql database")
+
+            ##readind data from local directory
+            df=pd.read_csv(os.path.join('notebooks/data','cleaned_dataset.csv'))
 
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path),exist_ok=True)
 
@@ -48,12 +51,3 @@ class DataIngestion:
         except Exception as e:
             raise CustomException(e,sys)
 
-##### The below code is only for checking and not required
-if __name__=="__main__":
-    logging.info("Logging has started")
-    try:
-        data_ingestion=DataIngestion()
-        data_ingestion.initiate_data_ingestion()
-    except Exception as e:
-        logging.info('Division by zero') 
-        raise CustomException(e,sys)
