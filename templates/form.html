@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obesity Level Classification</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1582365001759-6eb785c62879?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80') no-repeat center center fixed;
+            background-size: cover;
+            background-color: rgb(69, 51, 161);
+            color: #fff;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+
+        .login {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
+            max-width: 500px;
+            margin: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .login:hover {
+            transform: scale(1.05);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #fff;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #bbb;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+       <h1>Obesity Level Classification</h1>
+       <form action="{{ url_for('classify_datapoint') }}" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-control" name="gender" required>
+                    <option class="placeholder" selected disabled value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Age (years)</label>
+                <input class="form-control" type="number" name="age" placeholder="Enter your age" min="1" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Height (meters)</label>
+                <input class="form-control" type="number" name="height" placeholder="Enter your height" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Weight (kg)</label>
+                <input class="form-control" type="number" name="weight" placeholder="Enter your weight" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Family History with Overweight (Do you have a family history of overweight or obesity?)</label>
+                <select class="form-control" name="family_history" required>
+                    <option class="placeholder" selected disabled value="">Select Family History</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">FAVC (Do you frequently consume high-caloric food?)</label>
+                <select class="form-control" name="favc" required>
+                    <option class="placeholder" selected disabled value="">Select FAVC</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">FCVC (On a scale of 1 to 3, how often do you consume vegetables)</label>
+                <input class="form-control" type="number" name="fcvc" placeholder="Enter your FCVC" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">NCP (On a scale of 1 to 4, How many main meals do you have per day?)</label>
+                <input class="form-control" type="number" name="ncp" placeholder="Enter your NCP" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">CAEC (How often do you consume food between meals?)</label>
+                <select class="form-control" name="caec" required>
+                    <option class="placeholder" selected disabled value="">Select CAEC</option>
+                    <option value="Sometimes">Sometimes</option>
+                    <option value="Frequently">Frequently</option>
+                    <option value="Always">Always</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">SMOKE (Do you smoke?)</label>
+                <select class="form-control" name="smoke" required>
+                    <option class="placeholder" selected disabled value="">Select SMOKE</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">CH2O (On a scale of 1 to 3, how much water do you consume daily?)</label>
+                <input class="form-control" type="number" name="ch2o" placeholder="Enter your CH2O" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">SCC (Do you monitor your calorie consumption?)</label>
+                <select class="form-control" name="scc" required>
+                    <option class="placeholder" selected disabled value="">Select SCC</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">FAF (On a scale of 0 to 3, how frequently do you engage in physical activity?)</label>
+                <input class="form-control" type="number" name="faf" placeholder="Enter your FAF" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">TUE (On a scale of 0 to 2, How much time do you spend using technology devices?)</label>
+                <input class="form-control" type="number" name="tue" placeholder="Enter your TUE" min="0.01" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">CALC (How often do you consume alcohol?)</label>
+                <select class="form-control" name="calc" required>
+                    <option class="placeholder" selected disabled value="">Select CALC</option>
+                    <option value="Sometimes">Sometimes</option>
+                    <option value="Frequently">Frequently</option>
+                    <option value="Always">Always</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">MTRANS (What mode of transportation do you primarily use?)</label>
+                <select class="form-control" name="mtrans" required>
+                    <option class="placeholder" selected disabled value="">Select MTRANS</option>
+                    <option value="Public Transportation">Public Transportation</option>
+                    <option value="Automobile">Automobile</option>
+                    <option value="Walking">Walking</option>
+                    <option value="Motorbike">Motorbike</option>
+                    <option value="Bike">Bike</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <input class="btn btn-primary btn-block" type="submit" value="Classify Your Obesity Level" />
+            </div>
+        </form>
+        <h2 id="result" style="text-align: center;">THE Classification is <span id="classification">{{results}}</span></h2>
+   </div>
+
+</body>
+</html>

@@ -30,7 +30,7 @@ class DataTransformation:
         this function is responsible for data transformation
         '''
         try:
-            numerical_columns = ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE', 'BMI']
+            numerical_columns = ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE']
 
             onehot_columns = ['Gender','family_history_with_overweight', 'FAVC', 'SMOKE', 'SCC','MTRANS']
 
@@ -47,7 +47,7 @@ class DataTransformation:
 
             onehot_pipeline = Pipeline(steps=[
                 ("imputer", SimpleImputer(strategy="most_frequent")),
-                ("onehot_encoder", OneHotEncoder())
+                ("onehot_encoder", OneHotEncoder(handle_unknown='ignore'))
             ])
 
             ordinal_pipeline = Pipeline(steps=[
@@ -91,7 +91,7 @@ class DataTransformation:
                 train_df[target_column_name] = target_encoder.fit_transform(train_df[target_column_name])
                 test_df[target_column_name] = target_encoder.transform(test_df[target_column_name])
 
-            numerical_columns = ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE', 'BMI']
+            numerical_columns = ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE']
 
             ## divide the train dataset to independent and dependent feature
 
