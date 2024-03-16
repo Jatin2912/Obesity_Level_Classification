@@ -59,5 +59,5 @@ def classify_datapoint():
         return render_template('form.html', results=class_label)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",debug=True)
+    app.run(host="0.0.0.0")
 
