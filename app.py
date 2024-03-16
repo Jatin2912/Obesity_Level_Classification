@@ -1,7 +1,6 @@
 from flask import Flask,request,render_template
 from src.pipelines.prediction_pipeline import CustomData,PredictPipeline
 
-
 app = Flask(__name__)
 
 # Map numerical prediction result to class label
@@ -25,7 +24,7 @@ def index():
 
 @app.route('/predictdata', methods=['GET', 'POST'])
 def classify_datapoint():
-    if request.method == 'GET':
+    if request.method == 'GET': 
         return render_template('form.html')
     else:
         data = CustomData(
@@ -58,4 +57,5 @@ def classify_datapoint():
         return render_template('form.html', results=class_label)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0",debug=True)
+
